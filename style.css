@@ -1,4 +1,4 @@
-.title, .author, .description, .image, .pages {
+.title, .author, .description, .image, .pages, .minutes {
   display: none;
 }
 

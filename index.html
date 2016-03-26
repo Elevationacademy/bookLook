@@ -34,6 +34,9 @@
           <br>
           <input type="text" id="pages" class="form-control" placeholder="Number of Pages">
           </input>
+          <br>
+          <input type="text" id="minutes" class="form-control" placeholder="Minutes You Read Per Day">
+          </input>
         </div>
 
         <div class="errors-container">
@@ -52,6 +55,9 @@
           <div class="pages error alert alert-danger">
             You must enter the number of pages!
           </div>
+          <div class="minutes error alert alert-danger">
+            You must enter the number of minutes your read per day!
+          </div>
         </div>
 
         <button class="btn btn-primary search-book">Search</button>
@@ -62,6 +68,7 @@
 
   <script id="book-template" type="text/x-handlebars-template">
     <div class="entry">
+      <p>This book will take you {{timeToFinish}} days to read.</p>
       <h1>{{title}}</h1>
       <p>{{description}}</p>
       <h3>Written by: {{author}}</h3>

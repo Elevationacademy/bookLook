@@ -1,42 +1,43 @@
 var BookSearchApp = function () {
-  var book = null;
+  var createBook = function (title, author, description, image, pages) {
+    var book = {
+      title: title,
+      author: author,
+      description: description,
+      image: image,
+      pages: pages
+    }
 
-  var createBook = function (data) {
-    if (data.totalItems) {
-      var book = {
-        title: data.items[0].volumeInfo.title,
-        author: data.items[0].volumeInfo.authors[0],
-        description: data.items[0].volumeInfo.description,
-        image: data.items[0].volumeInfo.imageLinks["thumbnail"],
+    var source = $("#book-template").html();
+    var template = Handlebars.compile(source);
+    var context = book;
+    var html = template(book);
+
+    $('.book').html(html);
+  }
+
+  var validateEntry = function (title, author, description, image, pages) {
+    var errors = [];
+
+    if (title.length < 1) errors.push('title');
+    if (author.length < 1) errors.push('author');
+    if (description.length < 1) errors.push('description');
+    if (image.length < 1) errors.push('image');
+    if (pages.length < 1) errors.push('pages');
+
+    if (errors.length > 0) {
+      for (var i = 0; i < errors.length; i += 1) {
+        $('.' +  errors[i] + '').toggleClass('show');
       }
+    } else {
+      $('.errors-container').children().removeClass('show');
 
-      var source = $("#book-template").html();
-      var template = Handlebars.compile(source);
-      var context = book;
-      var html = template(book);
-
-      $('.book').html(html);
+      createBook(title, author, description, image, pages);
     }
   }
 
-  var fetch = function (isbn) {
-    $.ajax({
-      method: "GET",
-      url: 'https://www.googleapis.com/books/v1/volumes?q=' + isbn,
-      dataType: "jsonp",
-      jsonp: "callback",
-      success: function(data) {
-        console.log('success!');
-        createBook(data);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-      }
-    }); 
-  }
-
   return {
-    fetch: fetch
+    validateEntry: validateEntry
   }
 }
 
@@ -45,9 +46,11 @@ var app = BookSearchApp();
 $('.search-book').on('click', function (e) {
   e.preventDefault();
 
-  var isbn = $('#isbn-number').val();
-  $('#isbn-number').val('');
+  var title = $('#title').val();
+  var author = $('#author').val();
+  var description = $('#description').val();
+  var image = $('#image').val();
+  var pages = $('#pages').val();
 
-
-  app.fetch(isbn)
+  app.validateEntry(title, author, description, image, pages);
 });

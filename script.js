@@ -6,6 +6,7 @@ var BookSearchApp = function () {
       var book = {
         title: data.items[0].volumeInfo.title,
         author: data.items[0].volumeInfo.authors[0],
+        description: data.items[0].volumeInfo.description,
         image: data.items[0].volumeInfo.imageLinks["thumbnail"],
       }
 
@@ -15,7 +16,6 @@ var BookSearchApp = function () {
       var html = template(book);
 
       $('.book').html(html);
-   
     }
   }
 
